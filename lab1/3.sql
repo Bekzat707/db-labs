@@ -1,3 +1,0 @@
-ALTER TABLE users
-ADD COLUMN isa INTEGER DEFAULT 0 CHECK (isa IN (0, 1));
-
