@@ -8,11 +8,9 @@ CREATE TABLE users (
 
 
 alter table users
-add column isadmin int check(isadmin in (0,1))
+add column isadmin int ;
 
 
-alter table users
-drop constraint users_isadmin_check
 
 alter table users
 alter column isadmin type boolean using isadmin::boolean;
