@@ -1,18 +1,16 @@
 CREATE DATABASE lab1;
 
 CREATE TABLE users (
-    id SERIAL PRIMARY KEY,       -- Auto-incrementing integer
-    firstname VARCHAR(50),       -- String with max length 50
-    lastname VARCHAR(50)         -- String with max length 50
+    id SERIAL PRIMARY KEY,     
+    firstname VARCHAR(50),       
+    lastname VARCHAR(50)         
 );
 
 
 alter table users
-add column isadmin int check(isadmin in (0,1))
+add column isadmin int ;
 
 
-alter table users
-drop constraint users_isadmin_check
 
 alter table users
 alter column isadmin type boolean using isadmin::boolean;
