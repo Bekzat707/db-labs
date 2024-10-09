@@ -81,7 +81,7 @@ where value<150;
 
 
 delete from boxes
-using warehouse
-where boxes.warehouse=warehouse.code
-and warehouse.location='New York'
-returning *;
+    where warehouse in(
+    select code    from warehouse
+    where location ='New York'    )
+Returning *;
