@@ -1,27 +1,31 @@
 create database lab4;
 
-create table Warehouses(
-    code int,
-    location character varying (255),
-    capacity int
+create table warehouse(
+    code integer,
+    location varchar(255),
+    capacity integer
 );
-create table Boxes (
-    code character(4),
-    contents character varying (255),
-    value real,
-    warehouse int
-);
-\i '/path/to/lab4.sql';
 
-insert into Warehouses (code, location, capacity) values
+create table boxes(
+    code character(4),
+    contents varchar(255),
+    value real,
+    warehouse integer
+);
+
+
+insert into warehouse(code, location, capacity)
+values
 (1,'Chicago',3),
 (2,'Chicago',4),
 (3,'New York',7),
 (4,'Los Angeles',2),
 (5,'San Francisco',8);
 
-insert into Boxes(code, contents, value, warehouse) values
-('OMNT','Rocks',180,3),
+
+insert into boxes(code, contents, value, warehouse)
+values
+('OMN7','Rocks',180,3),
 ('4H8P','Rocks',250,1),
 ('4RT3','Scissors',190,4),
 ('763H','Rocks',200,1),
@@ -33,42 +37,51 @@ insert into Boxes(code, contents, value, warehouse) values
 ('P2T6','Scissors',150,2),
 ('TU55','Papers',90,5);
 
-SELECT * FROM Warehouses;
-SELECT * FROM Boxes;
+
+select * from  warehouse;
+select * from boxes;
 
 
-SELECT * FROM Warehouses;
+select * from boxes
+where value>150;
 
-SELECT * FROM Boxes
-WHERE value > 150;
 
-SELECT DISTINCT contents FROM Boxes;
+select  distinct contents
+from boxes;
 
-SELECT warehouse, COUNT(*) AS box_count
-FROM Boxes
-GROUP BY warehouse;
 
-SELECT warehouse, COUNT(*) AS box_count
-FROM Boxes
-GROUP BY warehouse
-HAVING COUNT(*) > 2;
+select warehouse ,COUNT(*) as warehouse_count
+from boxes
+group by warehouse;
 
-INSERT INTO Warehouses (code, location, capacity)
-VALUES (4, 'New York', 3);
 
-INSERT INTO Boxes (code, contents, value, warehouse)
-VALUES ('H5RT', 'Papers', 200, 2);
+select warehouse,COUNT(*) as warehouse_count
+    from boxes
+    group by warehouse
+Having count(*)>2;
 
-UPDATE Boxes
-SET value = value * 0.85
-WHERE value = (SELECT value FROM Boxes ORDER BY value DESC OFFSET 2 LIMIT 1);
 
-DELETE FROM Boxes
-WHERE value < 150;
+insert into warehouse(code, location, capacity)
+values(3,'New York',3);
 
-DELETE FROM Boxes
-USING Warehouses
-WHERE Boxes.warehouse = Warehouses.code
-AND Warehouses.location = 'New York'
-RETURNING Boxes.*;
+select * from warehouse;
+select * from boxes;
 
+insert into boxes(code, contents, value, warehouse)
+values('H5RT','Papers',200,2);
+select * from boxes;
+
+update boxes
+set value=value*0.85
+where value=(select value  from boxes order by  value desc offset 2 limit 1);
+
+
+delete from boxes
+where value<150;
+
+
+delete from boxes
+using warehouse
+where boxes.warehouse=warehouse.code
+and warehouse.location='New York'
+returning *;
