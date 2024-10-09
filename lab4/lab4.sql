@@ -62,7 +62,7 @@ Having count(*)>2;
 
 
 insert into warehouse(code, location, capacity)
-values(3,'New York',3);
+values(6,'New York',3);
 
 select * from warehouse;
 select * from boxes;
