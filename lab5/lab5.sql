@@ -10,11 +10,11 @@ CREATE TABLE customers (
 );
 
 CREATE TABLE orders (
-    ord_no INT PRIMARY KEY,
-    purch_amt DECIMAL(10, 2),
-    ord_date DATE,
-    customer_id INT REFERENCES customers(customer_id),
-    salesman_id INT
+    ord_no int PRIMARY KEY,
+    purch_amt real,
+    ord_date data,
+    customer_id int references customers(customer_id),
+    salesman_id int
 );
 
 INSERT INTO customers (customer_id, cust_name, city, grade, salesman_id)
@@ -37,29 +37,23 @@ VALUES
 (70005, 2400.6, '2012-07-27', 3007, 5001),
 (70008, 5760, '2012-09-10', 3002, 5001);
 
+select* from customers;
+select * from orders;
 
 --3
-SELECT SUM(purch_amt) AS total_purchase
-FROM orders;
+select sum(purch_amt) from orders;
+
 --4
-SELECT AVG(purch_amt) AS average_purchase
-FROM orders;
+select avg(purch_amt) from orders;
 
 --5
-
-SELECT COUNT(*) AS customers_with_names
-FROM customers
-WHERE cust_name IS NOT NULL;
-
+select count(cust_name )from customers;
 
 --6
-SELECT MIN(purch_amt) AS min_purchase
-FROM orders;
+select min(purch_amt) from orders;
 
 --7
-SELECT *
-FROM customers
-WHERE cust_name LIKE '%b';
+select * from customers where cust_name like '%b';
 
 --8
 select * from orders where customer_id in (select customer_id from customers where city = 'New York');
@@ -67,14 +61,12 @@ select * from orders where customer_id in (select customer_id from customers whe
 select * from orders where customer_id in (select customer_id from customers)and purch_amt>10;
 
 --10
-SELECT SUM(grade) AS total_grade
-FROM customers;
+select grade from customers;
+select sum(grade) from customers;
 
 --11
-SELECT *
-FROM customers
-WHERE cust_name IS NOT NULL;
+select cust_name from customers
+where cust_name is not null;
 
 --12
-SELECT MAX(grade) AS max_grade
-FROM customers;
+select max(grade)from customers;
