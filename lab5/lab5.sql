@@ -48,6 +48,7 @@ select avg(purch_amt) from orders;
 
 --5
 select count(cust_name )from customers;
+where cust_name is not NULL;
 
 --6
 select min(purch_amt) from orders;
