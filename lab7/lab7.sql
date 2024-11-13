@@ -20,4 +20,4 @@ create index index_employees_department_join
 on employees(department_id ,salary);
 
 create index index_budget
-on employees(budget);
+on departments(budget);
