@@ -60,33 +60,30 @@ VALUES (80010, 180.75, '2021-01-15', 4001, 1010),
        (80016, 5900.20, '2021-07-11', 4007, 1011);
 
 
---3--
+--3
 create role junior_dev login;
 
---4--
-    create view  new_york_salaesmen as select * from salesman where city='New York';
-select * from new_york_salaesmen;
---5--
-create view names as select s.name,c.cust_name from salesman As s inner join customers as c using(salesman_id);
-grant all privileges  on names to junior_dev;
+--4
+create view new_york_salesmen_view as select * from salesman where city = 'New York';
 
-select * from  names;
---6--
-create view only_high as select * from customers where grade=(select max(grade )from customers);
-grant select   on only_high to junior_dev;
+--5
+create view order_view as select ord_no, purch_amt, ord_date, c.cust_name, s.name from orders o
+    join customers c on o.customer_id = c.customer_id
+    join salesman s on o.salesman_id = s.salesman_id;
+grant all privileges on order_view to junior_dev;
 
-select * from only_high;
---7--
-create view count as select city,count(salesman_id) from salesman group by city ;
-select * from count;
+--6
+create view highest_customers_view as select * from customers where grade = (select max(grade) from customers);
+grant select on highest_customers_view to junior_dev;
 
---8--
+--7
+create view salesman_count_by_city_view as select city, count(*) from salesman group by city;
+
+--8
 create view salesman_with_multiple_customers as select s.salesman_id, s.name, s.city, s.commission, count(c.customer_id) AS customer_count
 from salesman s join customers c ON s.salesman_id = c.salesman_id
 group by s.salesman_id, s.name, s.city, s.commission having count(c.customer_id) > 1;
 
-select * from salesman_with_multiple_customers;
-
---9--
+--9
 create role intern;
 grant junior_dev to intern;
