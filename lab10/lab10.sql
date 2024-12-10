@@ -1,76 +1,77 @@
+create database lab10;
 
-CREATE  database  lab10;
-CREATE TABLE Books (
-    book_id SERIAL PRIMARY KEY,
-    title VARCHAR(255),
-    author VARCHAR(255),
-    price DECIMAL(10, 2),
-    quantity INTEGER
+create table books (
+    book_id serial primary key,
+    title varchar(255),
+    author varchar(255),
+    price decimal(10, 2),
+    quantity integer
 );
 
-CREATE TABLE Orders (
-    order_id SERIAL PRIMARY KEY,
-    book_id INTEGER REFERENCES Books(book_id),
-    customer_id INTEGER,
-    order_date DATE,
-    quantity INTEGER
+create table orders (
+    order_id serial primary key,
+    book_id integer references books(book_id),
+    customer_id integer,
+    order_date date,
+    quantity integer
 );
 
-CREATE TABLE Customers (
-    customer_id SERIAL PRIMARY KEY,
-    name VARCHAR(255),
-    email VARCHAR(255)
+create table customers (
+    customer_id serial primary key,
+    name varchar(255),
+    email varchar(255)
 );
 
-INSERT INTO Books (title, author, price, quantity)
-VALUES
-    ('Database 101', 'A. Smith', 40.00, 10),
-    ('Learn SQL', 'B. Johnson', 35.00, 15),
-    ('Advanced DB', 'C. Lee', 50.00, 5);
+insert into books (title, author, price, quantity)
+values
+    ('database 101', 'tuka', 45, 10),
+    ('linear', 'puka', 55, 15),
+    ('ds', 'nuka', 50, 5);
 
-INSERT INTO Customers (name, email)
-VALUES
-    ('John Doe', 'johndoe@example.com'),
-    ('Jane Doe', 'janedoe@example.com');
+insert into customers (name, email)
+values
+    ('bekzat', 'beka@kbtu.kz'),
+    ('turar', 'tuka@kbtu.kz');
 
 --1
-BEGIN;
-INSERT INTO Orders (book_id, customer_id, order_date, quantity)
-VALUES (1, 101, CURRENT_DATE, 2);
-UPDATE Books SET quantity = quantity - 2 WHERE book_id = 1;
-COMMIT;
+begin;
+insert into orders (book_id, customer_id, order_date, quantity)
+values (1, 101, current_date, 2);
+update books set quantity = quantity - 2 where book_id = 1;
+commit;
 
 --2
-DO $$
-BEGIN
-    IF (SELECT quantity FROM Books WHERE book_id = 3) < 10 THEN
-        RAISE NOTICE 'Insufficient quantity for book_id 3';
-        ROLLBACK;
-    ELSE
-        INSERT INTO Orders (order_id, book_id, customer_id, order_date, quantity)
-        VALUES (2, 3, 102, CURRENT_DATE, 10);
+do $$
+begin
+    if (select quantity from books where book_id = 3) < 10 then
+        raise notice 'quantity ';
+        rollback;
+    else
+        insert into orders (order_id, book_id, customer_id, order_date, quantity)
+        values (1, 2, 111, current_date, 10);
 
-        UPDATE Books SET quantity = quantity - 10 WHERE book_id = 3;
-        COMMIT;
-    END IF;
-END $$;
-SELECT * FROM Books;
-SELECT * FROM Orders;
+        update books set quantity = quantity - 10 where book_id = 3;
+        commit;
+    end if;
+end $$;
+
+select * from books;
+select * from orders;
 
 --3
-BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
-UPDATE Books SET price = 38.00 WHERE book_id = 2;
-COMMIT;
+begin transaction isolation level read committed;
+update books set price = 77 where book_id = 1;
+commit;
 
-BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
-SELECT price FROM Books WHERE book_id = 2;
+begin transaction isolation level read committed;
+select price from books where book_id = 2;
 
-SELECT price FROM Books WHERE book_id = 2;
-COMMIT;
+select price from books where book_id = 2;
+commit;
 
 --4
-BEGIN;
-UPDATE Customers SET email = 'newemail@example.com' WHERE customer_id = 101;
-COMMIT;
+begin;
+update customers set email = 'b_saparbek@kbtu.kz' where customer_id = 101;
+commit;
 
-SELECT * FROM Customers WHERE customer_id = 101;
+select * from customers where customer_id = 101;
