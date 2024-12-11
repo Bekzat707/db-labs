@@ -34,11 +34,15 @@ values
     ('turar', 'tuka@kbtu.kz');
 
 --1
+do $$
 begin;
 insert into orders (book_id, customer_id, order_date, quantity)
 values (1, 101, current_date, 2);
 update books set quantity = quantity - 2 where book_id = 1;
-commit;
+
+end$$;
+select * from books;
+select * from orders;
 
 --2
 do $$
@@ -50,7 +54,7 @@ begin
         insert into orders (order_id, book_id, customer_id, order_date, quantity)
         values (1, 2, 111, current_date, 10);
 
-        update books set quantity = quantity - 10 where book_id = 3;
+        update books set quantity = quantity - 10 where book_id = 2;
         commit;
     end if;
 end $$;
@@ -69,8 +73,11 @@ select price from books where book_id = 2;
 select price from books where book_id = 2;
 commit;
 
+select * from books;
+select * from customers;
+
 --4
-begin;
+begin transaction;
 update customers set email = 'b_saparbek@kbtu.kz' where customer_id = 101;
 commit;
 
